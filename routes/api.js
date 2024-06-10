@@ -64,6 +64,9 @@ module.exports = function (app) {
       }
       try {
         const book = await Book.findById(bookid);
+        if (!book) {
+          return res.send('no book exists');
+        }
         res.json({
           _id: book._id,
           title: book.title,
@@ -85,6 +88,9 @@ module.exports = function (app) {
       }
       try {
         const book = await Book.findById(bookid);
+        if (!book) {
+          return res.send('no book exists');
+        }
         book.comments.push(comment);
         await book.save();
         res.json({
@@ -103,6 +109,10 @@ module.exports = function (app) {
         return res.send('no book exists');
       }
       try {
+        const book = await Book.findByIdAndDelete(bookid);
+        if (!book) {
+          return res.send('no book exists');
+        }
         res.send('delete successful');
       } catch (err) {
         res.status(500).send(err.message);
